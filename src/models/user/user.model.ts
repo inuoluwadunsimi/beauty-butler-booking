@@ -2,9 +2,9 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { type UserInterfaces } from "../../interfaces";
+import { type User } from "../../interfaces";
 
-const userSchema = new Schema<UserInterfaces>(
+const userSchema = new Schema<User>(
   {
     _id: {
       type: String,

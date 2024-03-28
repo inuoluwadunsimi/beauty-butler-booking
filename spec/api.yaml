@@ -30,6 +30,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /auth/verification:
+    post:
+      summary: verify email
+      tags:
+        - onboarding
+        - authentication
+      operationId: verifyEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyEmail"
+      responses:
+        200:
+          description: email verified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
 
 
 
@@ -79,6 +106,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         password:
           type: string
         role:
@@ -90,3 +118,35 @@ components:
         - fullName
         - email
         - role
+
+    VerifyEmail:
+      type: object
+      properties:
+        email:
+          type: string
+        otp:
+          type: string
+      required:
+        - email
+        - otp
+
+
+    ###====RESPONSES=====###
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        fullName:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+

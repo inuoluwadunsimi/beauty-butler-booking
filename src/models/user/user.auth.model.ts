@@ -31,12 +31,7 @@ const userAuth = new Schema<UserAuth>(
       enum: Object.values(userRole),
       default: userRole.USER,
     },
-    recognisedDevices: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
+
     verified: {
       type: Boolean,
       default: false,

@@ -28,10 +28,6 @@ const userToken = new Schema<UserToken>(
       required: true,
       ref: config.mongodb.collections.users,
     },
-    deviceId: {
-      type: String,
-      required: true,
-    },
   },
 
   {

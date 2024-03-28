@@ -22,10 +22,7 @@ const userVerSchema = new Schema<UserVerification>(
       type: String,
       required: true,
     },
-    deviceId: {
-      type: String,
-      required: true,
-    },
+
     type: {
       type: String,
       enum: Object.values(OtpType),
