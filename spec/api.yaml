@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title:  API Docs
+  version: 1.0.0c
+  description: Api docs for appointment booking app
+paths:
+  /auth/register:
+    post:
+      summary: endpoint to sign up
+      tags:
+        - onboarding
+        - authentication
+      operationId: signup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+      responses:
+        200:
+          description: successful signup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+
+components:
+  parameters:
+    DeviceID:
+      name: x-device-id
+      in: header
+      schema:
+        type: string
+      required: true
+    AuthToken:
+      name: x-auth-token
+      in: header
+      schema:
+        type: string
+      required: true
+
+  schemas:
+    #default values
+    DefaultResponse:
+      title: DefaultResponse
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    ErrorResponse:
+      title: DefaultResponse
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - message
+
+    ##====REQUESTS======##
+
+    SignupRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - user
+            - merchant
+      required:
+        - fullName
+        - email
+        - role
