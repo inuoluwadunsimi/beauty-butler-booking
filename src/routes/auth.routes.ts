@@ -1,10 +1,12 @@
 import express from "express";
-import { handleSignup, handleVerifyEmail } from "../controllers";
+import { handleLogin, handleSignup, handleVerifyEmail } from "../controllers";
 
 const authRoutes = express.Router();
 
 authRoutes.post("/register", handleSignup);
 
 authRoutes.post("/verification", handleVerifyEmail);
+
+authRoutes.post("/login", handleLogin);
 
 export default authRoutes;

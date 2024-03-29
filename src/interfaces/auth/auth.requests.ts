@@ -11,3 +11,8 @@ export interface VerifyEmailRequest {
   email: string;
   otp: string;
 }
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}

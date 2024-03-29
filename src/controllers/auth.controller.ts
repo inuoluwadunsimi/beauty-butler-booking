@@ -1,5 +1,6 @@
 import {
   type IExpressRequest,
+  LoginRequest,
   SignupRequest,
   VerifyEmailRequest,
 } from "../interfaces";
@@ -27,6 +28,19 @@ export async function handleVerifyEmail(
   const body: VerifyEmailRequest = req.body;
   try {
     const authResponse = await authService.VerifyEmail(body);
+    ResponseManager.success(res, { authResponse });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleLogin(
+  req: Request,
+  res: ExpressResponse
+): Promise<void> {
+  const body: LoginRequest = req.body;
+  try {
+    const authResponse = await authService.login(body);
     ResponseManager.success(res, { authResponse });
   } catch (err: any) {
     ResponseManager.handleError(res, err);

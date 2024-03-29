@@ -9,6 +9,7 @@ import {
   UserAuth,
   NotFoundError,
   userRole,
+  LoginRequest,
 } from "../interfaces";
 import { UserDb, UserVerDb, UserAuthDb, UserTokenDb } from "../models";
 import bcrypt from "bcrypt";
@@ -125,5 +126,36 @@ export async function VerifyEmail(
   return {
     accessToken,
     user,
+  };
+}
+
+export async function login(body: LoginRequest): Promise<AuthResponse> {
+  let { email } = body;
+  const { password } = body;
+  email = email.toLowerCase();
+
+  const userAuth = await UserAuthDb.findOne<UserAuth>({ email });
+  if (!userAuth) {
+    throw new BadRequestError("invalid credentials");
+  }
+
+  const verifyPassword = await bcrypt.compare(password, userAuth.password);
+  if (!verifyPassword) {
+    throw new BadRequestError("invalid credentials");
+  }
+  const user = await UserDb.findOne<User>({ email });
+  if (!user) {
+    throw new NotFoundError("user not found");
+  }
+
+  const accessToken = jwtHelper.generateToken({
+    email,
+    userId: user.id,
+    role: userAuth.role,
+  });
+
+  return {
+    user,
+    accessToken,
   };
 }
