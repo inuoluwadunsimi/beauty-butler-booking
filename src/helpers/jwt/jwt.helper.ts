@@ -63,7 +63,7 @@ export class JwtHelper {
     }
   }
 
-  requirePermission(roleType: userRole) {
+  requirePermission(roleType: userRole[]) {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return async (req: IExpressRequest, res: Response, next: Function) => {
       const token = req.headers["x-auth-token"];
@@ -86,7 +86,7 @@ export class JwtHelper {
         }
 
         const decoded = await this.verifyToken(token);
-        if (roleType !== decoded.role) {
+        if (!roleType.includes(decoded.role)) {
           return this.respondError(res, 403, "Access denied");
         }
         req.email = decoded.email;
