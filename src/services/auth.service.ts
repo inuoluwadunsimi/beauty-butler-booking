@@ -130,6 +130,8 @@ export async function VerifyEmail(
 }
 
 export async function login(body: LoginRequest): Promise<AuthResponse> {
+  /* check if the user exists and if the password hashes match, if they don't return an error
+   * generate an auth token based on the user role and return the token and user object */
   let { email } = body;
   const { password } = body;
   email = email.toLowerCase();
@@ -154,6 +156,14 @@ export async function login(body: LoginRequest): Promise<AuthResponse> {
     role: userAuth.role,
   });
 
+  await UserTokenDb.updateOne(
+    { email },
+    {
+      email,
+      accessToken,
+      user: user.id,
+    }
+  );
   return {
     user,
     accessToken,

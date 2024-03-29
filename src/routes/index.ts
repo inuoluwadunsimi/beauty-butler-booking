@@ -8,6 +8,7 @@ const router: express.Router = express.Router();
 
 router.use("/", MainApiValidator);
 router.use("/auth", authRoutes);
+router.use("/user");
 
 router.use("/health", (req, res) => {
   res.send({ status: "OK" });
