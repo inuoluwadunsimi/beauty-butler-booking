@@ -11,6 +11,11 @@ export const config = {
       userAuth: "user_auths",
       userToken: "user_tokens",
       userVerification: "userVerifications",
+      merchant: "merchants,",
     },
+  },
+  mailing: {
+    resendAPIKey: process.env["RESEND_KEY"],
+    emailSender: <string>process.env.EMAIL_SENDER,
   },
 };
