@@ -26,6 +26,8 @@ export async function handleVerifyEmail(
 ): Promise<void> {
   const body: VerifyEmailRequest = req.body;
   try {
+    const authResponse = await authService.VerifyEmail(body);
+    ResponseManager.success(res, { authResponse });
   } catch (err: any) {
     ResponseManager.handleError(res, err);
   }

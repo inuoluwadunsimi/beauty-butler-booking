@@ -1,6 +1,7 @@
-import { Request } from 'express';
+import { Request } from "express";
 
 export interface IExpressRequest extends Request {
   userId?: string;
   email?: string;
+  role?: string;
 }
