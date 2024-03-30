@@ -12,10 +12,11 @@ interface otpEmail {
   otp: string;
 }
 
+const resend = new Resend(config.mailing.resendAPIKey);
+
 export const Mailer = {
-  resend: new Resend(config.mailing.resendAPIKey),
   async sendEmail(body: MailParams) {
-    await this.resend.emails.send({
+    await resend.emails.send({
       from: config.mailing.emailSender,
       to: body.to,
       subject: body.subject,

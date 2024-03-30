@@ -15,3 +15,16 @@ export async function handleGetUserProfile(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleLogout(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const user = req.userId;
+  try {
+    await userService.logout(user as string);
+    ResponseManager.handleError(res, { message: "logged out" });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}

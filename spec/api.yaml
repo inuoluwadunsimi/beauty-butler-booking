@@ -99,6 +99,66 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+        404:
+          description: not found error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/logout:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      tags:
+        - user
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+
+  /merchant/schedules:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      summary: endpoint for adding/creating merchant schedules
+      tags:
+        - merchant
+      operationId: createSchedules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                   $ref: "#/components/schemas/CreateScheduleRequest"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/DefaultResponse"
+    get:
+      summary: get all schedules
+      tags:
+        - merchant
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Schedule"
+
+
+
+
 
 
 
@@ -167,6 +227,8 @@ components:
         - email
         - role
 
+
+
     VerifyEmail:
       type: object
       properties:
@@ -187,6 +249,19 @@ components:
         password:
           type: string
 
+    CreateScheduleRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        startTime:
+          type: string
+        endTime:
+          type: string
+
+
+
     ###====RESPONSES=====###
     User:
       type: object
@@ -197,6 +272,25 @@ components:
           type: string
         fullName:
           type: string
+
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        merchant:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - booked
+            - available
+
+
 
     AuthResponse:
       type: object

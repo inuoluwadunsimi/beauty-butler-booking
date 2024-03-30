@@ -4,6 +4,7 @@
     "target": "es2016" ,
 
     "module": "commonjs" ,
+
     "rootDir": "./src",
     "typeRoots": [
       "./node_modules/@types"
@@ -21,3 +22,5 @@
     "skipLibCheck": true
   }
 }
+
+

@@ -15,7 +15,6 @@ import { UserDb, UserVerDb, UserAuthDb, UserTokenDb } from "../models";
 import bcrypt from "bcrypt";
 import { generateOtp } from "../helpers/utils";
 import { jwtHelper } from "../helpers/jwt/jwt.helper";
-import { MerchantDb } from "../models/mentor/merchant.model";
 import { Mailer } from "./email.service";
 
 export async function Signup(body: SignupRequest): Promise<void> {
@@ -60,10 +59,10 @@ export async function Signup(body: SignupRequest): Promise<void> {
   });
 
   //TODO: send email
-  await Mailer.sendSignupOtp({
-    otp,
-    recipient: email,
-  });
+  // await Mailer.sendSignupOtp({
+  //   otp,
+  //   recipient: email,
+  // });
 }
 
 export async function VerifyEmail(
@@ -98,17 +97,9 @@ export async function VerifyEmail(
     throw new NotFoundError("auth record not found");
   }
 
-  /*if the user is a merchant, create a merchant record*/
-
   const user = await UserDb.findOne<User>({ email });
   if (!user) {
     throw new NotFoundError("user not found");
-  }
-
-  if (userAuthRecord.role === userRole.MERCHANT) {
-    await MerchantDb.create({
-      user: user.id,
-    });
   }
 
   const accessToken = jwtHelper.generateToken({

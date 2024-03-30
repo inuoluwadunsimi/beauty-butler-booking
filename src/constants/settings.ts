@@ -12,6 +12,7 @@ export const config = {
       userToken: "user_tokens",
       userVerification: "userVerifications",
       merchant: "merchants,",
+      schedule: "schedules",
     },
   },
   mailing: {
