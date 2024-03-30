@@ -7,7 +7,7 @@ export enum userRole {
 export interface User extends BaseModel {
   email: string;
   fullName: string;
-  role: string;
+  role: userRole;
   phoneNumber: string;
   subscribed: boolean;
 }
@@ -16,7 +16,6 @@ export interface UserAuth extends BaseModel {
   email: string;
   password: string;
   user: string;
-  role: userRole;
   verified: boolean;
 }
 

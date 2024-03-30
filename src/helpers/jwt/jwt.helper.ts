@@ -40,7 +40,7 @@ export class JwtHelper {
       {
         email: body.email,
         userId: body.userId,
-        type: body.userId,
+        role: body.role,
       },
       encryptionKey,
       { expiresIn: "30d" }
@@ -80,12 +80,13 @@ export class JwtHelper {
           );
         }
 
-        const dbToken = await this.UserTokenDb.findOne({ token });
+        const dbToken = await this.UserTokenDb.findOne({ accessToken: token });
         if (!dbToken) {
           return this.respondError(res, 403, "invalid token");
         }
 
         const decoded = await this.verifyToken(token);
+
         if (!roleType.includes(decoded.role)) {
           return this.respondError(res, 403, "Access denied");
         }

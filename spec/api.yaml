@@ -109,7 +109,7 @@ paths:
   /user/logout:
     parameters:
       - $ref: "#/components/parameters/AuthToken"
-    get:
+    post:
       tags:
         - user
       responses:
@@ -119,6 +119,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DefaultResponse"
+
+  /user/merchants:
+    get:
+      summary: get all merchants
+      tags:
+        - merchants
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /user/schedules/{merchantId}:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/MerchantParam"
+    get:
+      summary: get merchants schedules
+      tags:
+        - merchants
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Schedule"
+
+
+
+
+
 
   /merchant/schedules:
     parameters:
@@ -168,6 +206,7 @@ paths:
 
 
 
+
 components:
   parameters:
     DeviceID:
@@ -176,9 +215,17 @@ components:
       schema:
         type: string
       required: true
+
     AuthToken:
       name: x-auth-token
       in: header
+      schema:
+        type: string
+      required: true
+
+    MerchantParam:
+      name: merchantId
+      in: path
       schema:
         type: string
       required: true

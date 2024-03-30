@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { type User } from "../../interfaces";
+import { type User, userRole } from "../../interfaces";
 
 const userSchema = new Schema<User>(
   {
@@ -22,6 +22,11 @@ const userSchema = new Schema<User>(
     fullName: {
       type: String,
       required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: Object.values(userRole),
     },
   },
   {

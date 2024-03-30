@@ -33,6 +33,7 @@ export async function Signup(body: SignupRequest): Promise<void> {
   const user = await UserDb.create({
     email,
     fullName,
+    role,
   });
 
   /*encrypt password then save password to userauth db
@@ -46,7 +47,6 @@ export async function Signup(body: SignupRequest): Promise<void> {
     password: encryptedPassword,
     email,
     user: user.id,
-    role,
   });
 
   /*create otp and send it to the user's mail*/
@@ -105,7 +105,7 @@ export async function VerifyEmail(
   const accessToken = jwtHelper.generateToken({
     email,
     userId: user.id,
-    role: userAuthRecord.role,
+    role: user.role,
   });
 
   await UserTokenDb.create({
@@ -144,7 +144,7 @@ export async function login(body: LoginRequest): Promise<AuthResponse> {
   const accessToken = jwtHelper.generateToken({
     email,
     userId: user.id,
-    role: userAuth.role,
+    role: user.role,
   });
 
   await UserTokenDb.updateOne(
@@ -153,6 +153,9 @@ export async function login(body: LoginRequest): Promise<AuthResponse> {
       email,
       accessToken,
       user: user.id,
+    },
+    {
+      upsert: true,
     }
   );
   return {

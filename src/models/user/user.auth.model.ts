@@ -26,11 +26,6 @@ const userAuth = new Schema<UserAuth>(
       requiredPaths: true,
       ref: config.mongodb.collections.users,
     },
-    role: {
-      type: String,
-      enum: Object.values(userRole),
-      default: userRole.USER,
-    },
 
     verified: {
       type: Boolean,
