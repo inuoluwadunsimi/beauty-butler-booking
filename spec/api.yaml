@@ -153,6 +153,45 @@ paths:
                 items:
                   $ref: "#/components/schemas/Schedule"
 
+  /user/appointments/{scheduleId}:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/ScheduleParam"
+    post:
+      summary: endpoint to book an appointment
+      tags:
+        - appoinment
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/appointments:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      tags:
+        - appointment
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+
+
 
 
 
@@ -194,6 +233,72 @@ paths:
                 items:
                   $ref: "#/components/schemas/Schedule"
 
+  /merchant/appointments:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      summary: endpoint to get all appointments
+      tags:
+        - appointment
+      responses:
+        200:
+          description: appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+
+  /merchant/appointments/{appointmentId}:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/AppointmentParam"
+    put:
+      summary: endpoint to change the status of an appointment
+      tags:
+        - appointment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAppointment"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        400:
+          description: error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: endpoint to get one appointment
+      tags:
+        - appointment
+      responses:
+        200:
+          description: appointment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+
+
+
 
 
 
@@ -219,6 +324,20 @@ components:
     AuthToken:
       name: x-auth-token
       in: header
+      schema:
+        type: string
+      required: true
+
+    AppointmentParam:
+      name: appointmentId
+      in: path
+      schema:
+        type: string
+      required: true
+
+    ScheduleParam:
+      name: scheduleId
+      in: path
       schema:
         type: string
       required: true
@@ -273,6 +392,16 @@ components:
         - fullName
         - email
         - role
+
+    UpdateAppointment:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - cancelled
+            - pending
+            - completed
 
 
 
@@ -336,6 +465,14 @@ components:
           enum:
             - booked
             - available
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
 
 
 
