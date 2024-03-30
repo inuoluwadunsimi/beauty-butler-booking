@@ -25,6 +25,11 @@ export async function handleViewMerchantSchedule(
   const user = req.userId;
 
   try {
+    const schedules = await merchantService.viewMerchantSchedule(
+      user as string
+    );
+
+    ResponseManager.success(res, { schedules });
   } catch (err) {
     ResponseManager.handleError(res, err);
   }

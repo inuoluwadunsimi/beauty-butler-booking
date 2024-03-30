@@ -1,4 +1,4 @@
-import { CreateSchedule } from "../interfaces";
+import { CreateSchedule, Schedule } from "../interfaces";
 import { ScheduleDb } from "../models/merchant/merchant.schedule.model";
 
 export async function createSchedule(
@@ -12,4 +12,8 @@ export async function createSchedule(
   }));
 
   await ScheduleDb.create(schedules);
+}
+
+export async function viewMerchantSchedule(user: string): Promise<Schedule[]> {
+  return await ScheduleDb.find<Schedule>({ merchant: user });
 }
