@@ -256,8 +256,9 @@ paths:
   /merchant/appointments/{appointmentId}:
     parameters:
       - $ref: "#/components/parameters/AuthToken"
-      - $ref: "#/components/parameters/AppointmentParam"
     put:
+      parameters:
+         - $ref: "#/components/parameters/AppointmentParam"
       summary: endpoint to change the status of an appointment
       tags:
         - appointment

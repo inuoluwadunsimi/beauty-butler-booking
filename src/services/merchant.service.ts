@@ -1,5 +1,11 @@
-import { CreateSchedule, Schedule } from "../interfaces";
-import { ScheduleDb } from "../models";
+import {
+  Appointment,
+  CreateSchedule,
+  NotFoundError,
+  Schedule,
+  UpdateAppointment,
+} from "../interfaces";
+import { AppointmentDb, ScheduleDb } from "../models";
 
 export async function createSchedule(
   user: string,
@@ -16,4 +22,27 @@ export async function createSchedule(
 
 export async function viewMerchantSchedule(user: string): Promise<Schedule[]> {
   return await ScheduleDb.find<Schedule>({ merchant: user });
+}
+
+export async function getMerchantAppointments(
+  user: string
+): Promise<Appointment[]> {
+  return await AppointmentDb.find({ merchant: user });
+}
+
+export async function updateAppointment(
+  payload: UpdateAppointment
+): Promise<Appointment> {
+  const { status, user, appointment } = payload;
+  const appointmentDetails = await AppointmentDb.findOneAndUpdate<Appointment>(
+    { _id: appointment, merchant: user },
+    {
+      status,
+    },
+    { new: true }
+  );
+  if (!appointmentDetails) {
+    throw new NotFoundError("appointment not found");
+  }
+  return appointmentDetails;
 }

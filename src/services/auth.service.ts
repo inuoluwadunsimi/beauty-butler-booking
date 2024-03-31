@@ -91,7 +91,8 @@ export async function VerifyEmail(
     { email },
     {
       verified: true,
-    }
+    },
+    { new: true }
   );
   if (!userAuthRecord) {
     throw new NotFoundError("auth record not found");

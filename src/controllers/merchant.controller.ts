@@ -34,3 +34,48 @@ export async function handleViewMerchantSchedule(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetMerchantAppointments(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const user = req.userId;
+  try {
+    const appointments = await merchantService.getMerchantAppointments(
+      user as string
+    );
+    ResponseManager.success(res, {});
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleUpdateAppointment(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { appointmentId } = req.params;
+  const user = req.userId;
+  const { status } = req.body;
+  try {
+    const appointment = await merchantService.updateAppointment({
+      user: user as string,
+      appointment: appointmentId,
+      status,
+    });
+    ResponseManager.success(res, { appointment });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleGetOneAppointment(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  try {
+    ResponseManager.success(res, {});
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}

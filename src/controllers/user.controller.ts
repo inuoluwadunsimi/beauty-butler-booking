@@ -87,5 +87,3 @@ export async function handleGetAllUserAppointments(
     ResponseManager.handleError(res, err);
   }
 }
-
-//TODO: BOOK APPOINTMENT, CANCEL APPOINTMENT, VIEW APPOINMENTS, VIEW APPOINMENT
