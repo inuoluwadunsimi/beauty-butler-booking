@@ -56,7 +56,11 @@ export async function bookAppointment(payload: BookAppointment): Promise<void> {
 
 export async function getAllUserAppointments(
   user: string
-): Promise<Appointment[]> {}
+): Promise<Appointment[]> {
+  return await AppointmentDb.find({ customer: user })
+    .populate("schedule")
+    .populate("merchant");
+}
 
 export async function logout(user: string): Promise<void> {
   /* delete all exisiting tokens*/

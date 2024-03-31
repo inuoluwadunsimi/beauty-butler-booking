@@ -3,6 +3,7 @@ import { jwtHelper } from "../helpers/jwt/jwt.helper";
 import { userRole } from "../interfaces";
 import {
   handleBookAppointment,
+  handleGetAllUserAppointments,
   handleGetMerchants,
   handleGetMerchantSchedule,
   handleGetUserProfile,
@@ -29,7 +30,11 @@ userRoutes.post(
   jwtHelper.requirePermission([userRole.USER]),
   handleBookAppointment
 );
-userRoutes.post("/appointments", jwtHelper.requirePermission([userRole.USER]));
+userRoutes.post(
+  "/appointments",
+  jwtHelper.requirePermission([userRole.USER]),
+  handleGetAllUserAppointments
+);
 
 userRoutes.get(
   "/schedules/:merchantId",
