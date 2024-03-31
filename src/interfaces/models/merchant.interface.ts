@@ -1,10 +1,5 @@
 import { BaseModel } from "./baseModel";
 
-export interface Merchant extends BaseModel {
-  user: string;
-  schedule: Schedules[];
-}
-
 export interface Schedule extends BaseModel {
   merchant: string;
   date: Date;
@@ -13,13 +8,20 @@ export interface Schedule extends BaseModel {
   status: ScheduleStatus;
 }
 
+export interface Appointment extends BaseModel {
+  schedule: string;
+  customer: string;
+  merchant: string;
+  status: AppointmentStatus;
+}
+
+export enum AppointmentStatus {
+  COMPLETED = "completed",
+  CANCELED = "cancelled",
+  PENDING = "pending",
+}
+
 export enum ScheduleStatus {
   BOOKED = "booked",
   AVAILABLE = "available",
-}
-
-interface Schedules {
-  date: Date;
-  startTime: string;
-  ednTime: string;
 }

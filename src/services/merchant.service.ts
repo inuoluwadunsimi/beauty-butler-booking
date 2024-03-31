@@ -1,5 +1,5 @@
 import { CreateSchedule, Schedule } from "../interfaces";
-import { ScheduleDb } from "../models/merchant/merchant.schedule.model";
+import { ScheduleDb } from "../models";
 
 export async function createSchedule(
   user: string,

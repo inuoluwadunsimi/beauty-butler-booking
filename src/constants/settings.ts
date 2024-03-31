@@ -13,6 +13,7 @@ export const config = {
       userVerification: "userVerifications",
       merchant: "merchants,",
       schedule: "schedules",
+      appointment: "appointments",
     },
   },
   mailing: {
