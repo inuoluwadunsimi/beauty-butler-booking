@@ -73,8 +73,10 @@ export async function handleGetOneAppointment(
   req: IExpressRequest,
   res: ExpressResponse
 ): Promise<void> {
+  const { appointmentId } = req.params;
   try {
-    ResponseManager.success(res, {});
+    const appointment = await merchantService.getOneAppointment(appointmentId);
+    ResponseManager.success(res, { appointment });
   } catch (err) {
     ResponseManager.handleError(res, err);
   }
