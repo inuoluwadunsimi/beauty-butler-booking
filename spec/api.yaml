@@ -175,10 +175,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+
+
   /user/appointments:
     parameters:
       - $ref: "#/components/parameters/AuthToken"
     get:
+      summary: view all appointments made by a user
       tags:
         - appointment
       responses:

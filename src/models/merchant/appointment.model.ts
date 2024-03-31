@@ -35,7 +35,7 @@ const appointmentSchema = new Schema({
   },
 });
 
-const AppointmentDb = mongoose.model(
+export const AppointmentDb = mongoose.model(
   config.mongodb.collections.appointment,
   appointmentSchema
 );

@@ -54,4 +54,38 @@ export async function handleGetMerchantSchedule(
   }
 }
 
+export async function handleBookAppointment(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { scheduleId } = req.params;
+  const user = req.userId;
+
+  try {
+    await userService.bookAppointment({
+      user: user as string,
+      schedule: scheduleId,
+    });
+    ResponseManager.success(res, { message: "appointment booked" });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleGetAllUserAppointments(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const user = req.userId;
+
+  try {
+    const appointments = await userService.getAllUserAppointments(
+      user as string
+    );
+    ResponseManager.success(res, { appointments });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
 //TODO: BOOK APPOINTMENT, CANCEL APPOINTMENT, VIEW APPOINMENTS, VIEW APPOINMENT

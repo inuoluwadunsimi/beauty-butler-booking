@@ -1,11 +1,14 @@
 import {
+  Appointment,
+  IExpressRequest,
   NotFoundError,
   Schedule,
   ScheduleStatus,
   User,
   userRole,
 } from "../interfaces";
-import { ScheduleDb, UserDb, UserTokenDb } from "../models";
+import { ScheduleDb, UserDb, UserTokenDb, AppointmentDb } from "../models";
+import { BookAppointment } from "../interfaces/user/user.requests";
 
 export async function getUserProfle(user: string): Promise<User> {
   const userDetails = await UserDb.findById<User>(user);
@@ -28,6 +31,32 @@ export async function getMerchantSchedule(
     status: ScheduleStatus.AVAILABLE,
   });
 }
+
+export async function bookAppointment(payload: BookAppointment): Promise<void> {
+  /*create and appoinment for the user using the scheduleId and userId
+
+  * */
+
+  const { user, schedule } = payload;
+
+  const scheduleDetails = await ScheduleDb.findById<Schedule>(schedule);
+  if (!scheduleDetails) {
+    throw new NotFoundError("schedule not found");
+  }
+
+  await AppointmentDb.create({
+    schedule,
+    customer: user,
+    merchant: scheduleDetails.merchant,
+  });
+
+  scheduleDetails.status = ScheduleStatus.BOOKED;
+  await scheduleDetails.save();
+}
+
+export async function getAllUserAppointments(
+  user: string
+): Promise<Appointment[]> {}
 
 export async function logout(user: string): Promise<void> {
   /* delete all exisiting tokens*/

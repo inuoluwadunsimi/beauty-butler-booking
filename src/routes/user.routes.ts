@@ -2,6 +2,7 @@ import express from "express";
 import { jwtHelper } from "../helpers/jwt/jwt.helper";
 import { userRole } from "../interfaces";
 import {
+  handleBookAppointment,
   handleGetMerchants,
   handleGetMerchantSchedule,
   handleGetUserProfile,
@@ -23,6 +24,12 @@ userRoutes.post(
 );
 
 userRoutes.get("/merchants", handleGetMerchants);
+userRoutes.post(
+  "/appointments/:scheduleId",
+  jwtHelper.requirePermission([userRole.USER]),
+  handleBookAppointment
+);
+userRoutes.post("/appointments", jwtHelper.requirePermission([userRole.USER]));
 
 userRoutes.get(
   "/schedules/:merchantId",
