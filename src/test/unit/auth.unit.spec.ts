@@ -7,6 +7,7 @@ import { UserAuthDb, UserDb, UserVerDb } from "../../models";
 import { userRole } from "../../interfaces";
 import { Mailer } from "../../services/email.service";
 import * as OtpModule from "../../helpers/utils";
+import bcrypt from "bcrypt";
 import { JwtHelper } from "../../helpers/jwt/jwt.helper";
 
 describe("auth service", () => {
@@ -17,6 +18,7 @@ describe("auth service", () => {
     await mongoose.connect(process.env.TEST_DB as string);
   });
   afterAll(async () => {
+    await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
   });
 
@@ -114,6 +116,56 @@ describe("auth service", () => {
       const response = await authService.VerifyEmail({
         email: "test@example.com",
         otp: "123456",
+      });
+
+      expect(response).toHaveProperty("accessToken");
+      expect(response).toHaveProperty("user");
+      expect(response.user.email).toBe("test@example.com");
+    });
+  });
+
+  describe("login", () => {
+    it("should throw an error if the user does not exist", async () => {
+      UserAuthDb.findOne = jest.fn().mockResolvedValue(null); // Simulate user not found in UserAuthDb
+
+      await expect(
+        authService.login({
+          email: "nonexistent@example.com",
+          password: "password123",
+        })
+      ).rejects.toThrow("invalid credentials");
+    });
+
+    it("should throw an error if password is incorrect", async () => {
+      UserAuthDb.findOne = jest.fn().mockResolvedValue({
+        email: "test@example.com",
+        password: "$2b$12$...",
+      });
+      bcrypt.compare = jest.fn().mockResolvedValue(false); // Simulate password mismatch
+
+      await expect(
+        authService.login({
+          email: "test@example.com",
+          password: "wrongpassword",
+        })
+      ).rejects.toThrow("invalid credentials");
+    });
+
+    it("should return auth response on successful login", async () => {
+      UserAuthDb.findOne = jest.fn().mockResolvedValue({
+        email: "test@example.com",
+        password: "$2b$12$...",
+      });
+      bcrypt.compare = jest.fn().mockResolvedValue(true); // Simulate password match
+      UserDb.findOne = jest.fn().mockResolvedValue({
+        id: "userId",
+        email: "test@example.com",
+        role: "user",
+      });
+
+      const response = await authService.login({
+        email: "test@example.com",
+        password: "correctpassword",
       });
 
       expect(response).toHaveProperty("accessToken");

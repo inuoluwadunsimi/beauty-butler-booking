@@ -1,6 +1,5 @@
 import {
   Appointment,
-  IExpressRequest,
   NotFoundError,
   Schedule,
   ScheduleStatus,
