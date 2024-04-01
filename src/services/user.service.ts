@@ -61,8 +61,7 @@ export async function getAllUserAppointments(
 ): Promise<Appointment[]> {
   return await AppointmentDb.find<Appointment>({ customer: user })
     .populate("schedule")
-    .populate("merchant")
-    .populate("customer");
+    .populate("merchant");
 }
 
 export async function logout(user: string): Promise<void> {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { AppointmentDb, ScheduleDb } from "../../models";
-import { AppointmentStatus } from "../../interfaces";
+import { AppointmentStatus, ScheduleStatus, userRole } from "../../interfaces";
 import * as merchantService from "../../services/merchant.service";
 import { NotFoundError } from "../../interfaces";
 
@@ -97,12 +97,27 @@ describe("merchant service", () => {
   describe("getOneAppointment", () => {
     it("fetches details of a single appointment", async () => {
       const mockAppointment = {
-        id: "app1",
-        status: AppointmentStatus.PENDING,
-        custopmer: "customerId",
-        merchant: "merchantId",
+        id: "1",
+        schedule: {
+          id: "22",
+          merchant: "kdkn",
+          date: "24-12-23",
+          startTime: "11:00",
+          endTime: "12:00",
+          status: ScheduleStatus.AVAILABLE,
+        },
+        merchant: {
+          id: "33432",
+          email: "testmerchant@test.com",
+          role: userRole.MERCHANT,
+          fullName: "big merchant",
+        },
       };
-      AppointmentDb.findById = jest.fn().mockResolvedValue(mockAppointment);
+      AppointmentDb.findById = jest.fn().mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(mockAppointment),
+        }),
+      });
 
       const appointment = await merchantService.getOneAppointment("app1");
 
@@ -111,7 +126,11 @@ describe("merchant service", () => {
     });
 
     it("throws NotFoundError if appointment not found", async () => {
-      AppointmentDb.findById = jest.fn().mockResolvedValue(null);
+      AppointmentDb.findById = jest.fn().mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(null),
+        }),
+      });
 
       await expect(
         merchantService.getOneAppointment("nonexistent")

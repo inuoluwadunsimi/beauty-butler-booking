@@ -143,7 +143,6 @@ describe("user service", () => {
                 role: userRole.MERCHANT,
                 fullName: "big merchant",
               },
-              customer: "userId",
             },
           ]),
         }),
