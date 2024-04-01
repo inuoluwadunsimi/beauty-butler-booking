@@ -1,4 +1,3 @@
-import { Resend } from "resend";
 import * as nodemailer from "nodemailer";
 
 import { config } from "../constants/settings";

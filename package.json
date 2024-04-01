@@ -19,7 +19,9 @@
   "version": "1.0.0",
   "main": "./src/entry/index.ts",
   "private": "true",
-  "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@types/compression": "1.7.2",
     "@types/cookie-parser": "1.4.3",
@@ -83,6 +85,7 @@
     "webpack-node-externals": "3.0.0"
   },
   "scripts": {
+    "build": "npm install && tsc",
     "test": "jest",
     "start": "node ./dist/entry/index.js",
     "dev:start": "NODE_ENV=development  nodemon src/entry/index.ts",
