@@ -27,12 +27,14 @@ export async function viewMerchantSchedule(user: string): Promise<Schedule[]> {
 export async function getMerchantAppointments(
   user: string
 ): Promise<Appointment[]> {
+  /*get all appointments for a single merchant*/
   return await AppointmentDb.find({ merchant: user });
 }
 
 export async function updateAppointment(
   payload: UpdateAppointment
 ): Promise<Appointment> {
+  /* this function helps to indicate anappointment as either completed or cancelled*/
   const { status, user, appointment } = payload;
   const appointmentDetails = await AppointmentDb.findOneAndUpdate<Appointment>(
     { _id: appointment, merchant: user },
