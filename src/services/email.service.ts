@@ -23,6 +23,7 @@ interface otpEmail {
 
 export const Mailer = {
   async sendEmail(body: MailParams) {
+    console.log(config.mailing.gmail_pass);
     await transporter.sendMail({
       to: body.to,
       from: config.mailing.emailSender,
@@ -32,7 +33,7 @@ export const Mailer = {
   },
 
   async sendSignupOtp(payload: otpEmail) {
-    console.log(payload);
+    console.log(config.mailing.emailSender);
     await this.sendEmail({
       to: payload.recipient,
       subject: "VERIFY YOUR EMAIL",

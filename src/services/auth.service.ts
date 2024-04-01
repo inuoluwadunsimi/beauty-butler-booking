@@ -8,7 +8,6 @@ import {
   UserVerification,
   UserAuth,
   NotFoundError,
-  userRole,
   LoginRequest,
 } from "../interfaces";
 import { UserDb, UserVerDb, UserAuthDb, UserTokenDb } from "../models";

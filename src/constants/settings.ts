@@ -18,6 +18,6 @@ export const config = {
   },
   mailing: {
     gmail_pass: <string>process.env.GMAIL_PASS,
-    emailSender: <string>process.env.EMAIL_SENDER,
+    emailSender: "danielolaoladeinde@gmail.com",
   },
 };
