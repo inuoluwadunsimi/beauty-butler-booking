@@ -1,5 +1,7 @@
 import { JwtHelper } from "../../helpers/jwt/jwt.helper";
-import { userRole } from "../../interfaces";
+import { IExpressRequest, userRole } from "../../interfaces";
+import * as jwt from "jsonwebtoken";
+import { Response } from "express";
 
 describe("JwtHelper", () => {
   const configOption = {
