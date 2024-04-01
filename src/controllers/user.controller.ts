@@ -62,11 +62,11 @@ export async function handleBookAppointment(
   const user = req.userId;
 
   try {
-    await userService.bookAppointment({
+    const appointment = await userService.bookAppointment({
       user: user as string,
       schedule: scheduleId,
     });
-    ResponseManager.success(res, { message: "appointment booked" });
+    ResponseManager.success(res, { appointment });
   } catch (err: any) {
     ResponseManager.handleError(res, err);
   }

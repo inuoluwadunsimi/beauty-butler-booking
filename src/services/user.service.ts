@@ -31,7 +31,9 @@ export async function getMerchantSchedule(
   });
 }
 
-export async function bookAppointment(payload: BookAppointment): Promise<void> {
+export async function bookAppointment(
+  payload: BookAppointment
+): Promise<Appointment> {
   /*create and appoinment for the user using the scheduleId and userId
 
   * */
@@ -43,7 +45,7 @@ export async function bookAppointment(payload: BookAppointment): Promise<void> {
     throw new NotFoundError("schedule not found");
   }
 
-  await AppointmentDb.create({
+  const appointment = await AppointmentDb.create({
     schedule,
     customer: user,
     merchant: scheduleDetails.merchant,
@@ -51,6 +53,7 @@ export async function bookAppointment(payload: BookAppointment): Promise<void> {
 
   scheduleDetails.status = ScheduleStatus.BOOKED;
   await scheduleDetails.save();
+  return appointment;
 }
 
 export async function getAllUserAppointments(

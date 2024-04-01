@@ -167,7 +167,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DefaultResponse"
+                $ref: "#/components/schemas/Appointment"
         400:
           description: bad request
           content:

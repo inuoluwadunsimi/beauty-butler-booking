@@ -30,7 +30,7 @@ userRoutes.post(
   jwtHelper.requirePermission([userRole.USER]),
   handleBookAppointment
 );
-userRoutes.post(
+userRoutes.get(
   "/appointments",
   jwtHelper.requirePermission([userRole.USER]),
   handleGetAllUserAppointments
