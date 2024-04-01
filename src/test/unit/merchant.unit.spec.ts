@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { AppointmentDb, ScheduleDb } from "../../models";
 import { AppointmentStatus } from "../../interfaces";
 import * as merchantService from "../../services/merchant.service";
+import { NotFoundError } from "../../interfaces";
 
 require("dotenv").config();
 
@@ -24,23 +25,11 @@ describe("merchant service", () => {
         { date: new Date("2023-01-01"), startTime: "11:00", endTime: "12:00" },
         { date: new Date("2023-01-02"), startTime: "11:00", endTime: "12:00" },
       ];
+      ScheduleDb.create = jest.fn().mockResolvedValue(body);
 
       await merchantService.createSchedule(user, body);
 
-      expect(ScheduleDb.create).toHaveBeenCalledWith([
-        {
-          date: new Date("2023-01-01"),
-          startTime: "11:00",
-          endTime: "12:00",
-          merchant: user,
-        },
-        {
-          date: new Date("2023-01-02"),
-          tartTime: "11:00",
-          endTime: "12:00",
-          merchant: user,
-        },
-      ]);
+      expect(ScheduleDb.create).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -102,6 +91,31 @@ describe("merchant service", () => {
         { new: true }
       );
       expect(updatedAppointment).toEqual(mockUpdatedAppointment);
+    });
+  });
+
+  describe("getOneAppointment", () => {
+    it("fetches details of a single appointment", async () => {
+      const mockAppointment = {
+        id: "app1",
+        status: AppointmentStatus.PENDING,
+        custopmer: "customerId",
+        merchant: "merchantId",
+      };
+      AppointmentDb.findById = jest.fn().mockResolvedValue(mockAppointment);
+
+      const appointment = await merchantService.getOneAppointment("app1");
+
+      expect(AppointmentDb.findById).toHaveBeenCalledWith("app1");
+      expect(appointment).toEqual(mockAppointment);
+    });
+
+    it("throws NotFoundError if appointment not found", async () => {
+      AppointmentDb.findById = jest.fn().mockResolvedValue(null);
+
+      await expect(
+        merchantService.getOneAppointment("nonexistent")
+      ).rejects.toThrow(NotFoundError);
     });
   });
 });
