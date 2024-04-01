@@ -1,12 +1,23 @@
+import mongoose from "mongoose";
+
+require("dotenv").config();
+
 import * as authService from "../../services/auth.service";
 import { UserAuthDb, UserDb, UserVerDb } from "../../models";
 import { userRole } from "../../interfaces";
 import { Mailer } from "../../services/email.service";
 import * as OtpModule from "../../helpers/utils";
+import { JwtHelper } from "../../helpers/jwt/jwt.helper";
 
 describe("auth service", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+  beforeAll(async () => {
+    await mongoose.connect(process.env.TEST_DB as string);
+  });
+  afterAll(async () => {
+    await mongoose.connection.close();
   });
 
   describe("Signup", () => {
@@ -54,6 +65,60 @@ describe("auth service", () => {
         otp: "123456",
         recipient: "test@example.com",
       });
+    });
+  });
+
+  describe("VerifyEmail", () => {
+    it("should throw an error if the OTP is incorrect", async () => {
+      UserVerDb.findOne = jest.fn().mockResolvedValue(null); // Simulate OTP not found
+
+      await expect(
+        authService.VerifyEmail({
+          email: "test@example.com",
+          otp: "wrong_otp",
+        })
+      ).rejects.toThrow("Otp entered is incorrect");
+    });
+
+    it("should throw an error if the OTP has expired", async () => {
+      const pastDate = new Date(Date.now() - 10000);
+      UserVerDb.findOne = jest.fn().mockResolvedValue({
+        email: "test@example.com",
+        otp: "123456",
+        expiresAt: pastDate,
+      });
+
+      await expect(
+        authService.VerifyEmail({
+          email: "test@example.com",
+          otp: "123456",
+        })
+      ).rejects.toThrow("Otp has expired");
+    });
+
+    it("should verify email and return auth response on successful OTP verification", async () => {
+      UserVerDb.findOne = jest.fn().mockResolvedValue({
+        email: "test@example.com",
+        otp: "123456",
+        expiresAt: new Date(Date.now() + 10000),
+      });
+      UserAuthDb.findOneAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ email: "test@example.com", verified: true });
+      UserDb.findOne = jest.fn().mockResolvedValue({
+        id: "userId",
+        email: "test@example.com",
+        role: "user",
+      });
+
+      const response = await authService.VerifyEmail({
+        email: "test@example.com",
+        otp: "123456",
+      });
+
+      expect(response).toHaveProperty("accessToken");
+      expect(response).toHaveProperty("user");
+      expect(response.user.email).toBe("test@example.com");
     });
   });
 });
