@@ -52,7 +52,9 @@ export async function updateAppointment(
 export async function getOneAppointment(
   appointmentId: string
 ): Promise<Appointment> {
-  const appointment = await AppointmentDb.findById<Appointment>(appointmentId);
+  const appointment = await AppointmentDb.findById<Appointment>(appointmentId)
+    .populate("schedule")
+    .populate("customer");
   if (!appointment) {
     throw new NotFoundError("appointment details not found");
   }

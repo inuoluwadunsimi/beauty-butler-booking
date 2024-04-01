@@ -187,7 +187,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Appointment"
+                  $ref: "#/components/schemas/AppointmentResponse"
 
 
 
@@ -468,6 +468,42 @@ components:
         id:
           type: string
           format: uuid
+        customer:
+          type: string
+          format: uuid
+        merchant:
+          type: string
+          format: uuid
+        schedule:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - cancelled
+
+    AppointmentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        merchant:
+          $ref: "#/components/schemas/User"
+        customer:
+          $ref: "#/components/schemas/User"
+        schedule:
+          $ref: "#/components/schemas/Schedule"
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - cancelled
+
+
+
 
 
 
