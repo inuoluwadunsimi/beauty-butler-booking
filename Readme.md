@@ -13,4 +13,6 @@ Instructions:
    - Test: npm run test
 
 
-Deployed URL: 
+Deployed URL: https://beauty-butler-booking.onrender.com
+API docs : https://beauty-butler-booking.onrender.com/docs
+ 
