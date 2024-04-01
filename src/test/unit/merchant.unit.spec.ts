@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { AppointmentDb, ScheduleDb, UserDb, UserTokenDb } from "../../models";
-import { NotFoundError, userRole, ScheduleStatus } from "../../interfaces";
+import { AppointmentDb, ScheduleDb } from "../../models";
+import { AppointmentStatus } from "../../interfaces";
+import * as merchantService from "../../services/merchant.service";
 
 require("dotenv").config();
-import * as merchantService from "../../services/merchant.service";
 
 describe("merchant service", () => {
   beforeEach(() => {
@@ -75,6 +75,33 @@ describe("merchant service", () => {
         merchant: "merchant123",
       });
       expect(appointments).toEqual(mockAppointments);
+    });
+  });
+  describe("updateAppointment", () => {
+    it("updates an appointment status", async () => {
+      const mockUpdatedAppointment = {
+        id: "app1",
+        status: AppointmentStatus.COMPLETED,
+        customer: "customerId",
+        merchant: "merchant123",
+        schedule: "scheduleId",
+      };
+      AppointmentDb.findOneAndUpdate = jest
+        .fn()
+        .mockResolvedValue(mockUpdatedAppointment);
+
+      const updatedAppointment = await merchantService.updateAppointment({
+        status: AppointmentStatus.COMPLETED,
+        user: "merchant123",
+        appointment: "app1",
+      });
+
+      expect(AppointmentDb.findOneAndUpdate).toHaveBeenCalledWith(
+        { _id: "app1", merchant: "merchant123" },
+        { status: "completed" },
+        { new: true }
+      );
+      expect(updatedAppointment).toEqual(mockUpdatedAppointment);
     });
   });
 });
