@@ -44,7 +44,7 @@ export async function handleGetMerchantAppointments(
     const appointments = await merchantService.getMerchantAppointments(
       user as string
     );
-    ResponseManager.success(res, {});
+    ResponseManager.success(res, { appointments });
   } catch (err) {
     ResponseManager.handleError(res, err);
   }
