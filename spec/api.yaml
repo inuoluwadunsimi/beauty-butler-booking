@@ -156,11 +156,12 @@ paths:
   /user/appointments/{scheduleId}:
     parameters:
       - $ref: "#/components/parameters/AuthToken"
-      - $ref: "#/components/parameters/ScheduleParam"
     post:
+      parameters:
+        - $ref: "#/components/parameters/ScheduleParam"
       summary: endpoint to book an appointment
       tags:
-        - appoinment
+        - appointment
       responses:
         200:
           description: success
@@ -174,12 +175,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-
-
-
-  /user/appointments:
-    parameters:
-      - $ref: "#/components/parameters/AuthToken"
     get:
       summary: view all appointments made by a user
       tags:
@@ -193,9 +188,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Appointment"
-
-
-
 
 
 
