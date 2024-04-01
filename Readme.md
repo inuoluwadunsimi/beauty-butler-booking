@@ -10,7 +10,11 @@ Technologies:
 
 Instructions:
    - Run locally: npm dev:start
-   - Test: npm run test
+   - Run Tests: npm test
+   - Install dependencies using npm install
+   - local port is on 8000 by default
+   - if running locally, API docs can be accessed at -  http://localhost:8000/docs/
+   - Use node version 18.18.0 
 
 
 Deployed URL: https://beauty-butler-booking.onrender.com
