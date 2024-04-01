@@ -17,7 +17,7 @@ export const config = {
     },
   },
   mailing: {
-    resendAPIKey: process.env["RESEND_KEY"],
+    gmail_pass: <string>process.env.GMAIL_PASS,
     emailSender: <string>process.env.EMAIL_SENDER,
   },
 };

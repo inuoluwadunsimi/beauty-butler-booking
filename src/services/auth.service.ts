@@ -58,11 +58,10 @@ export async function Signup(body: SignupRequest): Promise<void> {
     expiresAt: new Date(Date.now() + 10 * 60 * 1000),
   });
 
-  //TODO: send email
-  // await Mailer.sendSignupOtp({
-  //   otp,
-  //   recipient: email,
-  // });
+  await Mailer.sendSignupOtp({
+    otp,
+    recipient: email,
+  });
 }
 
 export async function VerifyEmail(
