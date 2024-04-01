@@ -6,7 +6,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Glouse API Docs", // Title of the documentation
+      title: "Appointment API Docs", // Title of the documentation
       version: "1.0.0", // Version of the app
       description: "Docs",
     },

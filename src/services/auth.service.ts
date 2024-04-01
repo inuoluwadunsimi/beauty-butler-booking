@@ -136,6 +136,21 @@ export async function login(body: LoginRequest): Promise<AuthResponse> {
   if (!verifyPassword) {
     throw new BadRequestError("invalid credentials");
   }
+
+  if (userAuth.verified !== true) {
+    const otp = generateOtp();
+    await UserVerDb.create({
+      email,
+      otp,
+      type: OtpType.SIGN_UP,
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    });
+    await Mailer.sendSignupOtp({
+      otp,
+      recipient: email,
+    });
+    throw new BadRequestError("kindly verify your email");
+  }
   const user = await UserDb.findOne<User>({ email });
   if (!user) {
     throw new NotFoundError("user not found");
