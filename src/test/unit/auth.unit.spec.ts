@@ -155,6 +155,7 @@ describe("auth service", () => {
       UserAuthDb.findOne = jest.fn().mockResolvedValue({
         email: "test@example.com",
         password: "$2b$12$...",
+        verified: true,
       });
       bcrypt.compare = jest.fn().mockResolvedValue(true); // Simulate password match
       UserDb.findOne = jest.fn().mockResolvedValue({
@@ -171,6 +172,27 @@ describe("auth service", () => {
       expect(response).toHaveProperty("accessToken");
       expect(response).toHaveProperty("user");
       expect(response.user.email).toBe("test@example.com");
+    });
+    it("throws an error if the user has not verified their email", async () => {
+      // Setup mocks to simulate an unverified user
+      UserAuthDb.findOne = jest.fn().mockResolvedValue({
+        email: "unverified@example.com",
+        password: "hashedPassword",
+        verified: false, // User is not verified
+      });
+      bcrypt.compare = jest.fn().mockResolvedValue(true); // Assume password matches
+      UserVerDb.create = jest.fn().mockResolvedValue({}); // Assume OTP creation succeeds
+      Mailer.sendSignupOtp = jest.fn().mockResolvedValue({}); // Assume OTP email sends successfully
+
+      await expect(
+        authService.login({
+          email: "unverified@example.com",
+          password: "correctPassword",
+        })
+      ).rejects.toThrow("kindly verify your email");
+
+      expect(UserVerDb.create).toHaveBeenCalled();
+      expect(Mailer.sendSignupOtp).toHaveBeenCalled();
     });
   });
 });
