@@ -1,11 +1,12 @@
-export class CustomError extends Error{
-    code:number;
-    data?:object
+// error constructor for throw errors in sevices
+export class CustomError extends Error {
+  code: number;
+  data?: object;
 
-    constructor(code:number,message:string,data?:object){
-        super();
-        this.code = code
-        this.message = message
-        this.data = data
-    }
+  constructor(code: number, message: string, data?: object) {
+    super();
+    this.code = code;
+    this.message = message;
+    this.data = data;
+  }
 }

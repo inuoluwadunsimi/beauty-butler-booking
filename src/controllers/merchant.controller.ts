@@ -6,6 +6,7 @@ import * as merchantService from "../services/merchant.service";
 
 export async function handleCreateSchedule(
   req: IExpressRequest,
+  // make request type of Iexpress request so as to be able to extract the userId
   res: ExpressResponse
 ): Promise<void> {
   const user = req.userId;

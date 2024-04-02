@@ -1,5 +1,6 @@
 import { BaseModel } from "./baseModel";
 
+//merchant related model interfaces
 export interface Schedule extends BaseModel {
   merchant: string;
   date: Date;

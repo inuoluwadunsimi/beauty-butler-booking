@@ -1,5 +1,6 @@
 import { userRole } from "../models/user.interfaces";
 
+//signup request body
 export interface SignupRequest {
   email: string;
   fullName: string;
@@ -7,6 +8,7 @@ export interface SignupRequest {
   role: userRole;
 }
 
+// verify email request body
 export interface VerifyEmailRequest {
   email: string;
   otp: string;

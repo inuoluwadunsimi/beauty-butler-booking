@@ -59,6 +59,7 @@ export async function bookAppointment(
 export async function getAllUserAppointments(
   user: string
 ): Promise<Appointment[]> {
+  // get all users appointment and populate the schedule and merchant
   return await AppointmentDb.find<Appointment>({ customer: user })
     .populate("schedule")
     .populate("merchant");

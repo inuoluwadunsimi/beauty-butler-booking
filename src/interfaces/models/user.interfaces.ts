@@ -1,9 +1,12 @@
 import { BaseModel } from "./baseModel";
 
+//user roles
 export enum userRole {
   USER = "user",
   MERCHANT = "merchant",
 }
+
+// user related models
 export interface User extends BaseModel {
   email: string;
   fullName: string;

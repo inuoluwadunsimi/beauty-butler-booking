@@ -27,12 +27,14 @@ const userAuth = new Schema<UserAuth>(
       ref: config.mongodb.collections.users,
     },
 
+    // to checck if a user has verified their mail
     verified: {
       type: Boolean,
       default: false,
     },
   },
   {
+    // convert _id to id in json response
     toObject: {
       transform(doc, ret) {
         ret.id = ret._id;

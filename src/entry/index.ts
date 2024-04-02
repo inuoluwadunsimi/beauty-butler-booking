@@ -1,10 +1,11 @@
 /* istanbul ignore file */
-
+// entry/main file
 import errorHandler from "errorhandler";
 
 import app from "../app";
 import { connectMongo } from "../helpers/mongodb.connector";
 
+//error handler
 app.use(errorHandler());
 
 (async () => {
