@@ -19,4 +19,5 @@ Instructions:
 
 Deployed URL: https://beauty-butler-booking.onrender.com
 API docs : https://beauty-butler-booking.onrender.com/docs
+Heath check: https://beauty-butler-booking.onrender.com/health
  
